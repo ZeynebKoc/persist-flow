@@ -10,6 +10,8 @@ export enum TaskPriority {
   HIGH = "high",
 }
 
+export type TabView = TaskStatus | "all" | "trash";
+
 export interface Todo {
   id: string;
   title: string;
