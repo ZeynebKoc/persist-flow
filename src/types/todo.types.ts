@@ -1,3 +1,10 @@
+export type Theme = "light" | "dark";
+
+export interface HeaderProps {
+  theme: Theme;
+  toggleTheme: () => void;
+}
+
 export enum TaskStatus {
   TODO = "todo",
   IN_PROGRESS = "in_progress",
