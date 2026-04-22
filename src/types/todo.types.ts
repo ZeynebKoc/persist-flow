@@ -1,3 +1,4 @@
+// Theme
 export type Theme = "light" | "dark";
 
 export interface HeaderProps {
@@ -5,11 +6,13 @@ export interface HeaderProps {
   toggleTheme: () => void;
 }
 
+// Icons
 export interface IconProps {
   size?: number;
   className?: string;
 }
 
+// Tasks
 export enum TaskStatus {
   TODO = "todo",
   IN_PROGRESS = "in_progress",
