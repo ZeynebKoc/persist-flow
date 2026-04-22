@@ -59,11 +59,13 @@ body::before {
   .text-muted   { color: var(--muted); }
   .text-muted2  { color: var(--muted2); }
   .text-primary { color: var(--primary); }
+  .text-bg { color: var(--bg); }
 
   .bg-bg       { background-color: var(--bg); }
   .bg-surface  { background-color: var(--surface); }
   .bg-surface2 { background-color: var(--surface2); }
   .bg-surface3 { background-color: var(--surface3); }
+  .bg-accent { background-color: var(--accent); }
 
   .border-border  { border-color: var(--border); }
   .border-border2 { border-color: var(--border2); }

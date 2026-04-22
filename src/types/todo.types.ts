@@ -5,6 +5,11 @@ export interface HeaderProps {
   toggleTheme: () => void;
 }
 
+export interface IconProps {
+  size?: number;
+  className?: string;
+}
+
 export enum TaskStatus {
   TODO = "todo",
   IN_PROGRESS = "in_progress",
