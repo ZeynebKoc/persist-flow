@@ -14,8 +14,11 @@
   --accent: #2D7F2F;
   --content: #0b0c0f;
   --muted: #8A909E;
-  --muted2: #6B7180;
+  --muted2: #393b41;
   --primary: #1A6FD4;
+  --high: #ff1900;
+  --medium: #fe5442;
+  --low: #ff9a8f;
 }
 
 .dark {
@@ -30,6 +33,9 @@
   --muted: #6B6B7A;
   --muted2: #9090A0;
   --primary: #4A9EF0;
+  --high: #ff1900;
+  --medium: #fe5442;
+  --low: #ff9a8f;
 }
 
 body {
@@ -59,13 +65,16 @@ body::before {
   .text-muted   { color: var(--muted); }
   .text-muted2  { color: var(--muted2); }
   .text-primary { color: var(--primary); }
-  .text-bg { color: var(--bg); }
+  .text-bg      { color: var(--bg); }
 
   .bg-bg       { background-color: var(--bg); }
   .bg-surface  { background-color: var(--surface); }
   .bg-surface2 { background-color: var(--surface2); }
   .bg-surface3 { background-color: var(--surface3); }
-  .bg-accent { background-color: var(--accent); }
+  .bg-accent   { background-color: var(--accent); }
+  .bg-high    { background-color: var(--high); }
+  .bg-medium { background-color: var(--medium); }
+  .bg-low    { background-color: var(--low); }
 
   .border-border  { border-color: var(--border); }
   .border-border2 { border-color: var(--border2); }
