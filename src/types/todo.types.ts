@@ -1,39 +1,46 @@
 // Theme
-export type Theme = "light" | "dark";
+export type Theme = 'light' | 'dark'
 
 export interface HeaderProps {
-  theme: Theme;
-  toggleTheme: () => void;
+  theme: Theme
+  toggleTheme: () => void
 }
 
 // Icons
 export interface IconProps {
-  size?: number;
-  className?: string;
+  size?: number
+  className?: string
 }
 
 // Tasks
 export enum TaskStatus {
-  TODO = "todo",
-  IN_PROGRESS = "in_progress",
-  DONE = "done",
+  TODO = 'todo',
+  IN_PROGRESS = 'in_progress',
+  DONE = 'done',
 }
 
 export enum TaskPriority {
-  LOW = "low",
-  MEDIUM = "medium",
-  HIGH = "high",
+  LOW = 'low',
+  MEDIUM = 'medium',
+  HIGH = 'high',
 }
 
-export type TabView = TaskStatus | "all" | "trash";
+export type TabView = TaskStatus | 'all' | 'trash'
 
 export interface Todo {
-  id: string;
+  id: string
+  title: string
+  description: string
+  status: TaskStatus
+  priority: TaskPriority
+  createdAt: string
+  updatedAt: string
+  deletedAt: string | null
+}
+
+// Empty Area Informations
+export interface EmptyStateProps {
+  icon?: React.ReactNode;
   title: string;
-  description: string;
-  status: TaskStatus;
-  priority: TaskPriority;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
+  description?: string;
 }

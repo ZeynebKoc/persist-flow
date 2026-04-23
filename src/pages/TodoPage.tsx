@@ -4,12 +4,14 @@ import { TodoCard } from "../components/todo/TodoCard.tsx";
 import { useTodoStore } from "../store/todoStore.ts";
 import { TabBar } from "../components/ui/TabBar.tsx"
 import { SearchBar } from "../components/ui/SearchBar.tsx"
+import { EmptyState } from "../components/ui/EmptyState.tsx"
+import SearchOffIcon from "../components/icons/SearchIcon.tsx";
 
 function TodoPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { todos, getFiltered, filters, setTab, getCounts, setSearch } = useTodoStore();
 
-  const filteredTodos = getFiltered();
+  const filteredTodos = getFiltered().filter((t) => t.deletedAt === null);
   const counts = getCounts();
 
   const editId = searchParams.get("edit");
@@ -29,9 +31,17 @@ function TodoPage() {
           onTabChange={setTab}
         />
 
-        {filteredTodos.map((todo) => (
-          <TodoCard key={todo.id} todo={todo} />
-        ))}
+        {filteredTodos.length === 0 ? (
+          <EmptyState
+            icon={<SearchOffIcon />}
+            title={filters.search ? `No results for "${filters.search}"` : "No tasks here"}
+            description={filters.search ? "Try a different keyword." : "Add a new task to get started."}
+          />
+        ) : (
+          filteredTodos.map((todo) => (
+            <TodoCard key={todo.id} todo={todo} />
+          ))
+        )}
       </div>
 
       {editTodo && (
