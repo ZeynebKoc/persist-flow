@@ -6,3 +6,4 @@ export { default as TrashIcon } from "./TrashIcon";
 export { default as DotsIcon } from "./DotsIcon";
 export { default as PlusIcon } from "./PlusIcon";
 export { default as SearchOffIcon } from "./SearchOffIcon";
+export { default as RestoreIcon } from "./RestoreIcon";

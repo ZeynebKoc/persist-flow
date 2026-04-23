@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Todo } from "../../types/todo.types";
 import { useTodoStore } from "../../store/todoStore";
 import { formatDate } from "../../utils/formatDate";
-import { PencilIcon, TrashIcon, DotsIcon } from "../icons/index";
+import { PencilIcon, TrashIcon, DotsIcon, RestoreIcon } from "../icons/index";
 import { ConfirmModal } from "../ui/ConfirmModal.tsx"
 import { useSearchParams } from "react-router-dom";
 import { statusConfig, priorityConfig } from "../../config/todoCardConfig.ts";
@@ -10,10 +10,12 @@ import { memo } from "react";
 
 interface TodoCardProps {
   todo: Todo;
+  isTrash?: boolean;
 }
 
-export const TodoCard = memo(function TodoCard({ todo }: TodoCardProps) {
-  const { deleteTodo } = useTodoStore();
+export const TodoCard = memo(function TodoCard({ todo, isTrash = false }: TodoCardProps) {
+
+  const { deleteTodo, restoreTodo, permanentlyDeleteTodo } = useTodoStore();
 
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -44,8 +46,22 @@ export const TodoCard = memo(function TodoCard({ todo }: TodoCardProps) {
     setConfirmOpen(true);
   }
 
+  function handleRestore() {
+    setMenuOpen(false);
+    restoreTodo(todo.id);
+  }
+
+  function handlePermanentDelete() {
+    setMenuOpen(false);
+    setConfirmOpen(true);
+  }
+
   function handleConfirmDelete() {
-    deleteTodo(todo.id);
+    if (isTrash) {
+      permanentlyDeleteTodo(todo.id);
+    } else {
+      deleteTodo(todo.id);
+    }
     setConfirmOpen(false);
   }
 
@@ -94,21 +110,42 @@ export const TodoCard = memo(function TodoCard({ todo }: TodoCardProps) {
           </button>
 
           {menuOpen && (
-            <div className="absolute right-0 top-9 z-50 w-36 bg-surface2 border border-border rounded-xl shadow-xl">
-              <button
-                onClick={handleEdit}
-                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-content hover:text-orange-500"
-              >
-                <PencilIcon className="w-4 h-4" />
-                Edit
-              </button>
-              <button
-                onClick={handleDelete}
-                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-content hover:text-red-700"
-              >
-                <TrashIcon className="w-4 h-4" />
-                Delete
-              </button>
+            <div className="absolute right-0 top-9 z-50 w-44 bg-surface2 border border-border rounded-xl shadow-xl overflow-hidden">
+              {isTrash ? (
+                <>
+                  <button
+                    onClick={handleRestore}
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-content hover:text-blue-700 transition-colors"
+                  >
+                    <RestoreIcon className="w-4 h-4" />
+                    Restore
+                  </button>
+                  <button
+                    onClick={handlePermanentDelete}
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-content hover:text-red-700 transition-colors"
+                  >
+                    <TrashIcon className="w-4 h-4" />
+                    Delete Forever
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={handleEdit}
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-content hover:text-orange-400 transition-colors"
+                  >
+                    <PencilIcon className="w-4 h-4" />
+                    Edit
+                  </button>
+                  <button
+                    onClick={handleDelete}
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-content hover:text-red-500 transition-colors"
+                  >
+                    <TrashIcon className="w-4 h-4" />
+                    Delete
+                  </button>
+                </>
+              )}
             </div>
           )}
         </div>
@@ -118,8 +155,12 @@ export const TodoCard = memo(function TodoCard({ todo }: TodoCardProps) {
         open={confirmOpen}
         onClose={() => setConfirmOpen(false)}
         onConfirm={handleConfirmDelete}
-        title="Are you sure you want to delete this task?"
-        description="You can restore it anytime from Trash."
+        title={isTrash ? "Delete permanently?" : "Move to trash?"}
+        description={
+          isTrash
+            ? "This action cannot be undone."
+            : "You can restore it anytime from Trash."
+        }
       />
     </div>
   );

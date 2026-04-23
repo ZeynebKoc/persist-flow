@@ -63,7 +63,11 @@ function TodoPage() {
             />
           ) : (
             filteredTodos.map((todo) => (
-              <TodoCard key={todo.id} todo={todo} />
+              <TodoCard
+                key={todo.id}
+                todo={todo}
+                isTrash={filters.tab === "trash"}
+              />
             ))
           )}
         </div>
