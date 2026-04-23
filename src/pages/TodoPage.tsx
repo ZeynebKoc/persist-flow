@@ -3,10 +3,11 @@ import { TodoModal } from "../components/ui/TodoModal.tsx";
 import { TodoCard } from "../components/todo/TodoCard.tsx";
 import { useTodoStore } from "../store/todoStore.ts";
 import { TabBar } from "../components/ui/TabBar.tsx"
+import { SearchBar } from "../components/ui/SearchBar.tsx"
 
 function TodoPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { todos, getFiltered, filters, setTab, getCounts } = useTodoStore();
+  const { todos, getFiltered, filters, setTab, getCounts, setSearch } = useTodoStore();
 
   const filteredTodos = getFiltered();
   const counts = getCounts();
@@ -17,6 +18,11 @@ function TodoPage() {
   return (
     <>
       <div className="flex flex-col gap-3">
+        <SearchBar
+          value={filters.search}
+          onChange={setSearch}
+        />
+
         <TabBar
           activeTab={filters.tab}
           counts={counts}
