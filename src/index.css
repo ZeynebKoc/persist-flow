@@ -7,8 +7,8 @@
 :root {
   --bg: #e6e5e5;
   --surface: #FFFFFF;
-  --surface2: #F0F2F5;
-  --surface3: #E8EBF0;
+  --surface2: #d0d0d0;
+  --surface3: #939393;
   --border: #b9bdc6;
   --border2: #94979d;
   --accent: #2D7F2F;
@@ -25,7 +25,7 @@
   --bg: #0C0C0F;
   --surface: #141418;
   --surface2: #1C1C22;
-  --surface3: #222229;
+  --surface3: #0a0a0e;
   --border: #2A2A33;
   --border2: #333340;
   --accent: #C8F04A;
@@ -75,7 +75,10 @@ body::before {
   .bg-high    { background-color: var(--high); }
   .bg-medium { background-color: var(--medium); }
   .bg-low    { background-color: var(--low); }
+  .bg-border   { background-color: var(--border); }
+  .bg-border2   { background-color: var(--border2); }
 
   .border-border  { border-color: var(--border); }
   .border-border2 { border-color: var(--border2); }
+  .border-surface { border-color: var(--surface); }
 }

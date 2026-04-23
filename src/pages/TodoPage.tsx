@@ -2,12 +2,14 @@ import { useSearchParams } from "react-router-dom";
 import { TodoModal } from "../components/ui/TodoModal.tsx";
 import { TodoCard } from "../components/todo/TodoCard.tsx";
 import { useTodoStore } from "../store/todoStore.ts";
+import { TabBar } from "../components/ui/TabBar.tsx"
 
 function TodoPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { todos } = useTodoStore();
+  const { todos, getFiltered, filters, setTab, getCounts } = useTodoStore();
 
-  const activeTodos = todos.filter((t) => t.deletedAt === null);
+  const filteredTodos = getFiltered();
+  const counts = getCounts();
 
   const editId = searchParams.get("edit");
   const editTodo = editId ? todos.find((t) => t.id === editId) : undefined;
@@ -15,7 +17,13 @@ function TodoPage() {
   return (
     <>
       <div className="flex flex-col gap-3">
-        {activeTodos.map((todo) => (
+        <TabBar
+          activeTab={filters.tab}
+          counts={counts}
+          onTabChange={setTab}
+        />
+
+        {filteredTodos.map((todo) => (
           <TodoCard key={todo.id} todo={todo} />
         ))}
       </div>
