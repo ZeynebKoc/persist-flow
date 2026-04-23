@@ -6,12 +6,13 @@ import { PencilIcon, TrashIcon, DotsIcon } from "../icons/index";
 import { ConfirmModal } from "../ui/ConfirmModal.tsx"
 import { useSearchParams } from "react-router-dom";
 import { statusConfig, priorityConfig } from "../../config/todoCardConfig.ts";
+import { memo } from "react";
 
 interface TodoCardProps {
   todo: Todo;
 }
 
-export function TodoCard({ todo }: TodoCardProps) {
+export const TodoCard = memo(function TodoCard({ todo }: TodoCardProps) {
   const { deleteTodo } = useTodoStore();
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -122,4 +123,4 @@ export function TodoCard({ todo }: TodoCardProps) {
       />
     </div>
   );
-}
+})
