@@ -20,10 +20,9 @@ function TodoPage() {
     getCounts,
     setSearch,
     setPriority,
-    addTodo
   } = useTodoStore();
 
-  const filteredTodos = getFiltered().filter((t) => t.deletedAt === null);
+  const filteredTodos = getFiltered()
   const counts = getCounts();
 
   const editId = searchParams.get("edit");
