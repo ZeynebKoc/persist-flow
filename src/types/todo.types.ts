@@ -44,3 +44,10 @@ export interface EmptyStateProps {
   title: string;
   description?: string;
 }
+
+// Button
+export interface ButtonProps {
+  icon?: React.ReactNode;
+  buttonName: string
+  onClick: () => void;
+}

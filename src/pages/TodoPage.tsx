@@ -6,11 +6,22 @@ import { TabBar } from "../components/ui/TabBar.tsx"
 import { SearchBar } from "../components/ui/SearchBar.tsx"
 import { PriorityFilter } from "../components/ui/Filter.tsx"
 import { EmptyState } from "../components/ui/EmptyState.tsx"
-import SearchOffIcon from "../components/icons/SearchIcon.tsx";
+import { SearchOffIcon, PlusIcon } from "../components/icons";
+import { AddNewTaskButton } from "../components/ui/Button.tsx"
+
 
 function TodoPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { todos, getFiltered, filters, setTab, getCounts, setSearch, setPriority } = useTodoStore();
+  const {
+    todos,
+    getFiltered,
+    filters,
+    setTab,
+    getCounts,
+    setSearch,
+    setPriority,
+    addTodo
+  } = useTodoStore();
 
   const filteredTodos = getFiltered().filter((t) => t.deletedAt === null);
   const counts = getCounts();
@@ -21,6 +32,11 @@ function TodoPage() {
   return (
     <>
       <div className="flex flex-col gap-3 md:gap-4">
+        <div className="flex gap-4 md:gap-5 items-center justify-between">
+          <h1 className="font-display font-extrabold text-2xl md:text-3xl tracking-tight text-accent">My Tasks</h1>
+          <AddNewTaskButton buttonName="Add New Task" icon={<PlusIcon />} onClick={() => setSearchParams({ add: "true" })} />
+        </div>
+
         <div className="flex gap-3 md:gap-4 items-center">
           <SearchBar
             value={filters.search}
@@ -60,6 +76,15 @@ function TodoPage() {
           todo={editTodo}
           modalTitle="Edit Task"
           buttonLabel="Save Changes"
+          onClose={() => setSearchParams({})}
+        />
+      )}
+
+      {searchParams.get("add") && (
+        <TodoModal
+          mode="add"
+          modalTitle="Add Task"
+          buttonLabel="Save New Task"
           onClose={() => setSearchParams({})}
         />
       )}
