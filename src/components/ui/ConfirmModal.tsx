@@ -26,7 +26,7 @@ export function ConfirmModal({ open, onClose, onConfirm, title, description }: C
       <div onClick={onClose} className="absolute inset-0 bg-black/40 backdrop-blur-sm"/>
 
       {/* MODAL */}
-      <div className="relative w-full max-w-xs md: max-w-sm rounded-2xl bg-surface border border-border shadow-xl p-5 animate-in fade-in zoom-in-95">
+      <div className="relative w-full max-w-xs md:max-w-sm rounded-2xl bg-surface border border-border shadow-xl p-5 animate-in fade-in zoom-in-95">
         <h2 className="text-sm text-content mb-2">{title}</h2>
         <p className="text-xs text-muted2 mb-4">{description}</p>
         <div className="flex justify-end gap-2">
