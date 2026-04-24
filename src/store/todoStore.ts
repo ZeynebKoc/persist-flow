@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { faker } from "@faker-js/faker";
 import { Todo, TaskStatus, TaskPriority, TabView } from "../types/todo.types";
 import { mockTodos } from "../data/mockTodos";
+import { useToastStore } from './toastStore';
 
 interface Filters {
   tab: TabView;
@@ -51,6 +52,7 @@ export const useTodoStore = create<TodoStore>((set, get) => ({
       deletedAt: null,
     };
     set((state) => ({ todos: [newTodo, ...state.todos] }));
+    useToastStore.getState().show('Task added')
   },
 
   updateTodo: (id, fields) => {
@@ -59,6 +61,7 @@ export const useTodoStore = create<TodoStore>((set, get) => ({
         t.id === id ? { ...t, ...fields, updatedAt: new Date().toISOString() } : t
       ),
     }));
+    useToastStore.getState().show('Task edited')
   },
 
   deleteTodo: (id) => {
@@ -67,6 +70,7 @@ export const useTodoStore = create<TodoStore>((set, get) => ({
         t.id === id ? { ...t, deletedAt: new Date().toISOString() } : t
       ),
     }));
+    useToastStore.getState().show('Moved to trash', 'info')
   },
 
   restoreTodo: (id) => {
@@ -75,12 +79,14 @@ export const useTodoStore = create<TodoStore>((set, get) => ({
         t.id === id ? { ...t, deletedAt: null } : t
       ),
     }));
+    useToastStore.getState().show('Task restored')
   },
 
   permanentlyDeleteTodo: (id) => {
     set((state) => ({
       todos: state.todos.filter((t) => t.id !== id),
     }));
+    useToastStore.getState().show('Permanently deleted', 'error')
   },
 
   setTab: (tab) => set((state) => ({ filters: { ...state.filters, tab } })),
