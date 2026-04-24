@@ -27,9 +27,9 @@ function generateTodo(overrides?: Partial<Todo>): Todo {
 
 //total todo count
 export const mockTodos: Todo[] = [
-  ...Array.from({ length: 28 }, () => generateTodo()),
+  ...Array.from({ length: 84 }, () => generateTodo()),
 
-  ...Array.from({ length: 4 }, () =>
+  ...Array.from({ length: 16 }, () =>
     generateTodo({
       deletedAt: faker.date.recent({ days: 7 }).toISOString(),
     })

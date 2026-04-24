@@ -8,7 +8,15 @@ import { PriorityFilter } from "../components/ui/Filter.tsx"
 import { EmptyState } from "../components/ui/EmptyState.tsx"
 import { SearchOffIcon, PlusIcon } from "../components/icons";
 import { AddNewTaskButton } from "../components/ui/Button.tsx"
+import { WindowVirtualizedList } from "virtua-restoration";
+import { useVirtualListStore } from "../store/virtualListStore";
+import type { CacheSnapshot } from "virtua";
 
+const cacheProvider = {
+  get: () => useVirtualListStore.getState().get("feed"),
+  set: (data: [number, CacheSnapshot]) =>
+    useVirtualListStore.getState().set("feed", data),
+};
 
 function TodoPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -54,23 +62,30 @@ function TodoPage() {
           onTabChange={setTab}
         />
 
-        <div className="flex flex-col gap-2 md:gap-3">
-          {filteredTodos.length === 0 ? (
-            <EmptyState
-              icon={<SearchOffIcon />}
-              title={filters.search ? `No results for "${filters.search}"` : "No tasks here"}
-              description={filters.search ? "Try a different keyword." : "Add a new task to get started."}
-            />
-          ) : (
-            filteredTodos.map((todo) => (
-              <TodoCard
-                key={todo.id}
-                todo={todo}
-                isTrash={filters.tab === "trash"}
-              />
-            ))
-          )}
-        </div>
+        {filteredTodos.length === 0 ? (
+          <EmptyState
+            icon={<SearchOffIcon />}
+            title={filters.search ? `No results for "${filters.search}"` : "No tasks here"}
+            description={filters.search ? "Try a different keyword." : "Add a new task to get started."}
+          />
+        ) : (
+          <WindowVirtualizedList
+            cacheKey="feed"
+            cacheSourceType="custom"
+            customProvider={cacheProvider}
+          >
+            <div className="flex flex-col gap-2 md:gap-3">
+              {filteredTodos.map((todo) => (
+
+                <TodoCard
+                  key={todo.id}
+                  todo={todo}
+                  isTrash={filters.tab === "trash"}
+                />
+              ))}
+            </div>
+          </WindowVirtualizedList>
+        )}
       </div>
 
       {editTodo && (
