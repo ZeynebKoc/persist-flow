@@ -116,18 +116,39 @@ export const useTodoStore = create<TodoStore>((set, get) => ({
     });
   },
 
-  getCounts: () => {
-  const { todos } = get();
+    getCounts: () => {
+    const { todos, filters } = get();
 
-  const active = todos.filter((t) => t.deletedAt === null);
-  const trashed = todos.filter((t) => t.deletedAt !== null);
+    // search ve priority filtresini uygula ama tab'ı uygulama
+    const base = todos.filter((t) => {
+      if (t.deletedAt !== null) return false;
+      if (filters.priority !== "all" && t.priority !== filters.priority) return false;
+      if (filters.search.trim()) {
+        const q = filters.search.toLowerCase();
+        if (!t.title.toLowerCase().includes(q) && !t.description.toLowerCase().includes(q)) {
+          return false;
+        }
+      }
+      return true;
+    });
+
+    const trash = todos.filter((t) => {
+      if (t.deletedAt === null) return false;
+      if (filters.search.trim()) {
+        const q = filters.search.toLowerCase();
+        if (!t.title.toLowerCase().includes(q) && !t.description.toLowerCase().includes(q)) {
+          return false;
+        }
+      }
+      return true;
+    });
 
     return {
-      all: active.length,
-      todo: active.filter((t) => t.status === TaskStatus.TODO).length,
-      in_progress: active.filter((t) => t.status === TaskStatus.IN_PROGRESS).length,
-      done: active.filter((t) => t.status === TaskStatus.DONE).length,
-      trash: trashed.length,
+      all: base.length,
+      [TaskStatus.TODO]: base.filter((t) => t.status === TaskStatus.TODO).length,
+      [TaskStatus.IN_PROGRESS]: base.filter((t) => t.status === TaskStatus.IN_PROGRESS).length,
+      [TaskStatus.DONE]: base.filter((t) => t.status === TaskStatus.DONE).length,
+      trash: trash.length,
     };
   },
 }));
