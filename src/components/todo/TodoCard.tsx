@@ -1,30 +1,29 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, memo } from "react";
 import { Todo } from "../../types/todo.types";
 import { useTodoStore } from "../../store/todoStore";
 import { formatDate } from "../../utils/formatDate";
 import { PencilIcon, TrashIcon, DotsIcon, RestoreIcon } from "../icons/index";
-import { ConfirmModal } from "../ui/ConfirmModal.tsx"
 import { useSearchParams } from "react-router-dom";
-import { statusConfig, priorityConfig } from "../../config/todoCardConfig.ts";
-import { memo } from "react";
+import { statusConfig, priorityConfig } from "../../config/todoCardConfig";
 
 interface TodoCardProps {
   todo: Todo;
   isTrash?: boolean;
+  onDeleteRequest: (id: string, permanent: boolean) => void;
 }
 
-export const TodoCard = memo(function TodoCard({ todo, isTrash = false }: TodoCardProps) {
-
-  const { deleteTodo, restoreTodo, permanentlyDeleteTodo } = useTodoStore();
-
+export const TodoCard = memo(function TodoCard({
+  todo,
+  isTrash = false,
+  onDeleteRequest,
+}: TodoCardProps) {
+  const { restoreTodo } = useTodoStore();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const [, setSearchParams] = useSearchParams();
 
   const status = statusConfig[todo.status];
   const priority = priorityConfig[todo.priority];
-
-  const [confirmOpen, setConfirmOpen] = useState(false);
-  const [, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -43,7 +42,12 @@ export const TodoCard = memo(function TodoCard({ todo, isTrash = false }: TodoCa
 
   function handleDelete() {
     setMenuOpen(false);
-    setConfirmOpen(true);
+    onDeleteRequest(todo.id, false);
+  }
+
+  function handlePermanentDelete() {
+    setMenuOpen(false);
+    onDeleteRequest(todo.id, true);
   }
 
   function handleRestore() {
@@ -51,37 +55,21 @@ export const TodoCard = memo(function TodoCard({ todo, isTrash = false }: TodoCa
     restoreTodo(todo.id);
   }
 
-  function handlePermanentDelete() {
-    setMenuOpen(false);
-    setConfirmOpen(true);
-  }
-
-  function handleConfirmDelete() {
-    if (isTrash) {
-      permanentlyDeleteTodo(todo.id);
-    } else {
-      deleteTodo(todo.id);
-    }
-    setConfirmOpen(false);
-  }
-
   return (
     <div
-      className={`hover:border-border2 hover:bg-surface2 ${status.hover} relative flex flex-col sm:flex-row sm:items-center gap-3 bg-surface border border-border rounded-r-xl px-4 py-3 transition-all duration-200 group `}
+      className={`hover:border-border2 hover:bg-surface2 ${status.hover} relative flex flex-col sm:flex-row sm:items-center gap-3 bg-surface border border-border rounded-r-xl px-4 py-3 transition-colors duration-200 group`}
     >
-
       {/* LEFT BORDER */}
       <div className={`absolute left-0 top-0 bottom-0 w-[4px] ${status.borderClass}`} />
 
       {/* LEFT SIDE */}
       <div className="flex-1 min-w-0 pl-3">
         <p className="text-sm font-medium truncate text-content">{todo.title}</p>
-        <p className="text-xs text-muted2 font-light truncate mt-1">{todo.description} </p>
+        <p className="text-xs text-muted2 font-light truncate mt-1">{todo.description}</p>
       </div>
 
-
       {/* RIGHT SIDE */}
-      <div className="flex items-center justify-between gap-3 md:gap-3 flex-wrap sm:flex-nowrap sm:justify-end">
+      <div className="flex items-center justify-between gap-3 flex-wrap sm:flex-nowrap sm:justify-end">
 
         {/* STATUS */}
         <div className={`h-7 min-w-[80px] px-1 flex items-center justify-center rounded-full text-[0.7rem] font-semibold ${status.pillClass}`}>
@@ -104,7 +92,7 @@ export const TodoCard = memo(function TodoCard({ todo, isTrash = false }: TodoCa
         <div className="relative" ref={menuRef}>
           <button
             onClick={() => setMenuOpen((prev) => !prev)}
-            className="w-7 h-7 flex items-center justify-center rounded-lg border border-border bg-surface2 text-muted2 hover:border-border2 hover:text-content transition-all duration-200"
+            className="w-7 h-7 flex items-center justify-center rounded-lg border border-border bg-surface2 text-muted2 hover:border-border2 hover:text-content transition-colors duration-200"
           >
             <DotsIcon className="w-4 h-4" />
           </button>
@@ -115,14 +103,14 @@ export const TodoCard = memo(function TodoCard({ todo, isTrash = false }: TodoCa
                 <>
                   <button
                     onClick={handleRestore}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-content hover:text-blue-700 transition-colors"
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-content hover:text-blue-400 transition-colors"
                   >
                     <RestoreIcon className="w-4 h-4" />
                     Restore
                   </button>
                   <button
                     onClick={handlePermanentDelete}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-content hover:text-red-700 transition-colors"
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-content hover:text-red-500 transition-colors"
                   >
                     <TrashIcon className="w-4 h-4" />
                     Delete Forever
@@ -150,17 +138,6 @@ export const TodoCard = memo(function TodoCard({ todo, isTrash = false }: TodoCa
           )}
         </div>
       </div>
-      <ConfirmModal
-        open={confirmOpen}
-        onClose={() => setConfirmOpen(false)}
-        onConfirm={handleConfirmDelete}
-        title={isTrash ? "Delete permanently?" : "Move to trash?"}
-        description={
-          isTrash
-            ? "This action cannot be undone."
-            : "You can restore it anytime from Trash."
-        }
-      />
     </div>
   );
 })

@@ -12,6 +12,8 @@ import { WindowVirtualizedList } from "virtua-restoration";
 import { useVirtualListStore } from "../store/virtualListStore";
 import type { CacheSnapshot } from "virtua";
 import { Helmet } from "react-helmet-async";
+import { ConfirmModal } from "../components/ui/ConfirmModal.tsx"
+import { useState } from "react";
 
 const cacheProvider = {
   get: () => useVirtualListStore.getState().get("feed"),
@@ -29,7 +31,9 @@ function TodoPage() {
     getCounts,
     setSearch,
     setPriority,
+    deleteTodo
   } = useTodoStore();
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   const filteredTodos = getFiltered()
   const counts = getCounts();
@@ -39,7 +43,6 @@ function TodoPage() {
 
   return (
     <>
-
       <Helmet>
         <title>Todos | Persist Flow</title>
         <meta name="description" content="View, manage and track all your tasks in one place." />
@@ -83,17 +86,28 @@ function TodoPage() {
           >
             <div className="flex flex-col gap-2 md:gap-3">
               {filteredTodos.map((todo) => (
-
                 <TodoCard
                   key={todo.id}
                   todo={todo}
                   isTrash={filters.tab === "trash"}
+                  onDeleteRequest={setDeleteId}
                 />
               ))}
             </div>
           </WindowVirtualizedList>
         )}
       </div>
+
+      <ConfirmModal
+        open={deleteId !== null}
+        onClose={() => setDeleteId(null)}
+        onConfirm={() => {
+          if (deleteId) deleteTodo(deleteId);
+          setDeleteId(null);
+        }}
+        title="Move to trash?"
+        description="You can restore it anytime from Trash."
+      />
 
       {editTodo && (
         <TodoModal
