@@ -94,32 +94,35 @@ export const useTodoStore = create<TodoStore>((set, get) => ({
   setSearch: (search) => set((state) => ({ filters: { ...state.filters, search } })),
 
   getFiltered: () => {
-    const { todos, filters } = get();
+  const { todos, filters } = get();
 
-    return todos.filter((t) => {
-      // trash tab
-      if (filters.tab === "trash") return t.deletedAt !== null;
-
-      // all, todo, in_progress, done tabs
-      if (t.deletedAt !== null) return false;
-
-      if (filters.tab !== "all" && t.status !== filters.tab) return false;
-      if (filters.priority !== "all" && t.priority !== filters.priority) return false;
+  return todos.filter((t) => {
+    if (filters.tab === "trash") {
+      if (t.deletedAt === null) return false;
       if (filters.search.trim()) {
         const q = filters.search.toLowerCase();
-        if (!t.title.toLowerCase().includes(q) && !t.description.toLowerCase().includes(q)) {
-          return false;
-        }
+        return t.title.toLowerCase().includes(q) || t.description.toLowerCase().includes(q);
       }
-
       return true;
-    });
-  },
+    }
+
+    if (t.deletedAt !== null) return false;
+    if (filters.tab !== "all" && t.status !== filters.tab) return false;
+    if (filters.priority !== "all" && t.priority !== filters.priority) return false;
+    if (filters.search.trim()) {
+      const q = filters.search.toLowerCase();
+      if (!t.title.toLowerCase().includes(q) && !t.description.toLowerCase().includes(q)) {
+        return false;
+      }
+    }
+
+    return true;
+  });
+},
 
     getCounts: () => {
     const { todos, filters } = get();
 
-    // search ve priority filtresini uygula ama tab'ı uygulama
     const base = todos.filter((t) => {
       if (t.deletedAt !== null) return false;
       if (filters.priority !== "all" && t.priority !== filters.priority) return false;
