@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import SearchIcon from "../icons/SearchIcon";
+import { SearchIcon } from "../icons";
 
 interface SearchBarProps {
   value: string;

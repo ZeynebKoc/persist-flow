@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { TaskPriority, TaskStatus, Todo } from "../../types/todo.types";
 import { useTodoStore } from "../../store/todoStore";
 import { statusOptions, priorityOptions } from "../../config/todoConfig";
-import CancelIcon from "../icons/CancelIcon";
+import { CancelIcon } from "../icons";
 
 interface TodoModalProps {
   mode: "add" | "edit";

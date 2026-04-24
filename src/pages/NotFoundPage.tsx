@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import ArrowLeftIcon from "../components/icons/ArrowLeftIcon";
+import { ArrowLeftIcon } from "../components/icons";
 import { Helmet } from "react-helmet-async";
 
 export default function NotFoundPage() {
