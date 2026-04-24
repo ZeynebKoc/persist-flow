@@ -30,7 +30,7 @@ export function ConfirmModal({ open, onClose, onConfirm, title, description }: C
         <h2 className="text-sm text-content mb-2">{title}</h2>
         <p className="text-xs text-muted2 mb-4">{description}</p>
         <div className="flex justify-end gap-2">
-          <button onClick={onClose} className="px-3 py-1.5 text-sm rounded-lg border border-border bg-surface2 text-content hover:bg-surface transition">
+          <button onClick={onClose} className="px-3 py-1.5 text-sm rounded-lg bg-green-700 text-bg hover:opacity-80 border border-border bg-surface2 text-content hover:bg-surface transition">
             Cancel
           </button>
 

@@ -7,7 +7,7 @@ export function Toaster() {
   if (toasts.length === 0) return null;
 
   return (
-    <div className="fixed top-6 right-12 z-[100] gap-2">
+    <div className="fixed bottom-6 right-12 z-[100] gap-2">
       {toasts.map((toast) => (
         <div
           key={toast.id}
@@ -16,9 +16,9 @@ export function Toaster() {
             flex items-center gap-3 px-4 py-3 rounded-xl border border-border shadow-lg
             cursor-pointer text-sm md:text-base font-medium min-w-[220px] max-w-[320px]
             transition-all duration-200 animate-in slide-in-from-bottom-2
-            ${toast.type === "success" ? "bg-green-700 border-border text-content" : ""}
-            ${toast.type === "error" ? "bg-red-700 border-border text-content" : ""}
-            ${toast.type === "info" ? "bg-blue-700 border-border text-content" : ""}
+            ${toast.type === "success" ? "bg-green-700 border-border text-white" : ""}
+            ${toast.type === "error" ? "bg-red-700 border-border text-white" : ""}
+            ${toast.type === "info" ? "bg-blue-700 border-border text-white" : ""}
           `}
         >
           <span className="flex-shrink-0">

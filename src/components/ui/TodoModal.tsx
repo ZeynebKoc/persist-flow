@@ -180,13 +180,13 @@ export function TodoModal({ mode, todo, modalTitle, buttonLabel, onClose }: Todo
         <div className="flex gap-2 justify-end">
           <button
             onClick={handleClose}
-            className="px-4 py-2 text-xs md:text-sm font-medium rounded-xl border border-border2 text-muted2 hover:text-content transition-all duration-200"
+            className="px-4 py-2 text-xs md:text-sm font-medium bg-red-700 text-bg hover:opacity-80 rounded-xl border border-border2 text-muted2 hover:text-black transition-all duration-200"
           >
             Cancel
           </button>
           <button
             onClick={handleSubmit}
-            className="px-5 py-2 text-xs md:text-sm font-semibold rounded-xl bg-accent text-bg hover:opacity-80 transition-all duration-200"
+            className="px-5 py-2 text-xs md:text-sm rounded-xl bg-accent text-bg hover:opacity-80 transition-all duration-200"
           >
             {buttonLabel}
           </button>

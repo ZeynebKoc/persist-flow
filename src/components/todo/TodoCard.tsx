@@ -110,7 +110,7 @@ export const TodoCard = memo(function TodoCard({ todo, isTrash = false }: TodoCa
           </button>
 
           {menuOpen && (
-            <div className="absolute right-0 top-9 z-50 w-44 bg-surface2 border border-border rounded-xl shadow-xl overflow-hidden">
+            <div className="absolute right-0 top-9 z-50 w-44 bg-surface2 border border-border2 rounded-xl shadow-xl">
               {isTrash ? (
                 <>
                   <button
@@ -150,7 +150,6 @@ export const TodoCard = memo(function TodoCard({ todo, isTrash = false }: TodoCa
           )}
         </div>
       </div>
-
       <ConfirmModal
         open={confirmOpen}
         onClose={() => setConfirmOpen(false)}
