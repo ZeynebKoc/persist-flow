@@ -9,7 +9,7 @@ interface TabBarProps {
 
 export function TabBar({ activeTab, counts, onTabChange }: TabBarProps) {
   return (
-    <div className="flex gap-1 bg-surface border border-border rounded-xl p-1">
+    <div className="flex gap-1 bg-surface border border-border rounded-xl p-1 transition-all duration-200">
       {tabs.map(({ view, label }) => {
         const isActive = activeTab === view;
         const isTrash = view === "trash";
