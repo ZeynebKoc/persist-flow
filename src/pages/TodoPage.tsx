@@ -11,6 +11,7 @@ import { AddNewTaskButton } from "../components/ui/Button.tsx"
 import { WindowVirtualizedList } from "virtua-restoration";
 import { useVirtualListStore } from "../store/virtualListStore";
 import type { CacheSnapshot } from "virtua";
+import { Helmet } from "react-helmet-async";
 
 const cacheProvider = {
   get: () => useVirtualListStore.getState().get("feed"),
@@ -38,6 +39,12 @@ function TodoPage() {
 
   return (
     <>
+
+      <Helmet>
+        <title>Todos | Persist Flow</title>
+        <meta name="description" content="View, manage and track all your tasks in one place." />
+      </Helmet>
+
       <div className="flex flex-col gap-3 md:gap-4">
         <div className="flex gap-4 md:gap-5 items-center justify-between">
           <h1 className="font-display font-extrabold text-2xl md:text-3xl tracking-tight text-accent">My Tasks</h1>
